@@ -1,0 +1,39 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Secrets — never commit (set these in Railway env vars instead)
+.env
+.env.local
+.env.*.local
+
+# Deploy bundles / archives
+*.zip
+
+# Large original source images (not used by the running app)
+public/products/_source/
+
+# Runtime uploads (ephemeral)
+server/uploads/*
+!server/uploads/.gitkeep

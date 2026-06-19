@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <rect width="48" height="48" rx="11" fill="#191512"/>
+  <text x="22" y="35" text-anchor="middle"
+        font-family="Fraunces, Georgia, 'Times New Roman', serif"
+        font-size="34" font-weight="600" fill="#f5efe6">G</text>
+  <circle cx="38.5" cy="33" r="3.2" fill="#c2562f"/>
+</svg>
