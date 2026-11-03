@@ -1,0 +1,404 @@
+.sh {
+  position: fixed;
+  z-index: 90;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition:
+    transform 0.45s var(--ease),
+    background 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
+}
+
+.sh.is-solid {
+  background: rgba(255, 250, 245, 0.82);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 1px 0 var(--line-2);
+}
+
+.sh.is-hidden {
+  transform: translateY(-100%);
+}
+
+body.lock .sh {
+  /* never sit over an open dialog's scroll position */
+  transform: translateY(-100%);
+}
+
+.sh__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 68px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+}
+
+.sh__brand {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 4px;
+  margin-left: -4px;
+  border-radius: 8px;
+}
+
+.sh__nav {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  margin: 0 auto;
+}
+
+.sh__nav a {
+  position: relative;
+  z-index: 1;
+  padding: 9px 12px;
+  font-size: 14.5px;
+  color: var(--nav);
+  white-space: nowrap;
+  border-radius: 999px;
+  transition: color 0.25s;
+}
+
+.sh__nav a:hover {
+  color: var(--ink);
+}
+
+.sh__nav a[aria-current='page'] {
+  color: #9a3412;
+  font-weight: 500;
+}
+
+/* active pill slides between links */
+.sh__ind {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 999px;
+  background: var(--orange-soft);
+  box-shadow: inset 0 0 0 1px rgba(234, 88, 12, 0.22);
+  opacity: 0;
+  transition:
+    transform 0.5s var(--ease),
+    width 0.5s var(--ease),
+    opacity 0.3s;
+}
+
+.sh__right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.sh__link {
+  font-size: 14.5px;
+  color: var(--nav);
+  transition: color 0.2s;
+}
+
+.sh__link:hover,
+.sh__link[aria-current='page'] {
+  color: #9a3412;
+}
+
+.sh__cta {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--violet);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 10px 26px -12px rgba(232, 89, 12, 0.8);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.sh__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px -12px rgba(232, 89, 12, 0.9);
+}
+
+.sh__menu {
+  display: none;
+}
+
+/* ---------- lowest-price promo strip ---------- */
+.sh__promo {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 36px;
+  padding: 0 16px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #c2410c, #f04d0c 40%, #ff8a2b);
+  color: #fff;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+
+/* light sweep so the offer catches the eye */
+.sh__promo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%) -100% 0 / 60% 100% no-repeat;
+  animation: sh-sweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sh-sweep {
+  0%,
+  35% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 260% 0;
+  }
+}
+
+.sh__promo-badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #fff;
+  color: #c2410c;
+  font-family: var(--tight);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: sh-badge 2.2s ease-in-out infinite;
+}
+
+@keyframes sh-badge {
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.25);
+  }
+}
+
+.sh__promo-text b {
+  font-weight: 700;
+  font-size: 14.5px;
+}
+
+.sh__promo-more {
+  opacity: 0.9;
+}
+
+.sh__promo-cta,
+.sh__promo-wa {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 11px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.sh__promo-cta {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.sh__promo-cta:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.sh__promo-wa {
+  background: #25d366;
+  color: #fff;
+}
+
+.sh__promo-wa:hover {
+  transform: translateY(-1px);
+}
+
+.sh__wa-btn {
+  height: 52px;
+  background: #25d366;
+  color: #fff;
+}
+
+/* thin orange bar that runs once on every page change */
+.sh__progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, #f04d0c, #ff8a2b);
+  transform-origin: left;
+  animation: sh-progress 0.9s var(--ease) both;
+  pointer-events: none;
+}
+
+@keyframes sh-progress {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  70% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 1060px) {
+  .sh__nav,
+  .sh__right {
+    display: none;
+  }
+
+  .sh__bar {
+    justify-content: space-between;
+    height: 62px;
+  }
+
+  .sh__menu {
+    display: grid;
+    place-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid var(--line-2);
+  }
+
+  .sh__menu span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: transform 0.35s var(--ease);
+  }
+
+  .sh__menu[aria-expanded='true'] span:first-child {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+
+  .sh__menu[aria-expanded='true'] span:last-child {
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+
+  .sh.is-menu {
+    background: rgba(255, 250, 245, 0.97);
+  }
+
+  .sh__panel {
+    display: grid;
+    max-height: calc(100svh - var(--sh-h));
+    overflow: auto;
+    padding: 6px clamp(16px, 4vw, 40px) 22px;
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  .sh__panel a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 4px;
+    font-family: var(--display);
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line-2);
+    animation: sh-item 0.5s var(--ease) both;
+    animation-delay: calc(var(--i) * 40ms);
+  }
+
+  .sh__panel a[aria-current='page'] {
+    color: #c2410c;
+  }
+
+  .sh__panel a[aria-current='page']::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background: var(--orange);
+    order: -1;
+  }
+
+  .sh__panel a[aria-current='page'] {
+    justify-content: flex-start;
+  }
+
+  .sh__panel a[aria-current='page'] svg {
+    margin-left: auto;
+  }
+
+  .sh__panel svg {
+    width: 18px;
+    height: 10px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    opacity: 0.5;
+  }
+
+  .sh__panel-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .sh__promo {
+    gap: 8px;
+    padding: 0 10px;
+    font-size: 12.5px;
+  }
+  .sh__promo-more,
+  .sh__promo-wa span {
+    display: none;
+  }
+  .sh__promo-badge {
+    display: none;
+  }
+  .sh__promo-wa {
+    padding: 0 7px;
+  }
+}
+
+@keyframes sh-item {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sh,
+  .sh__ind {
+    transition: none;
+  }
+  .sh__progress,
+  .sh__panel a,
+  .sh__promo::before,
+  .sh__promo-badge {
+    animation: none;
+  }
+}

@@ -1,97 +1,177 @@
-import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useContent } from '../context/ContentContext'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useExpert } from './expertContext'
+import Link from './Link'
+import { Grain } from './glass/Grain'
+import './glass/glass.css'
+import './hero.css'
+
+const ART_VIDEO =
+  'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/435a4fe7-e43b-4e7c-af78-0be083e73569.mp4'
+const ART_STILL =
+  'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/782a4a52-4c1e-4471-bb0c-aa232927f4a6.webp'
+
+const LINES = ['Bare metal', 'built for what', 'you run next.']
+
+const reducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export default function Hero() {
-  const { hero: HERO_SLIDES } = useContent()
-  const [i, setI] = useState(0)
-  const [paused, setPaused] = useState(false)
-  const total = HERO_SLIDES.length || 1
-  const ref = useRef<HTMLElement | null>(null)
+  const root = useRef<HTMLElement>(null)
+  const video = useRef<HTMLVideoElement>(null)
+  const [still] = useState(reducedMotion)
+  const talk = useExpert()
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  })
-  const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '18%'])
+  // One Web Animations timeline on load, then the page is static.
+  useLayoutEffect(() => {
+    const el = root.current
+    if (!el || reducedMotion()) return
+    const ease = 'cubic-bezier(.2,.8,.2,1)'
+    // while the boot splash is up, hold the entrance until it lifts
+    const boot = document.getElementById('boot') && !document.getElementById('boot')!.classList.contains('is-out') ? 1450 : 0
+    const q = (s: string) => Array.from(el.querySelectorAll<HTMLElement>(s))
+    const anims: Animation[] = []
+    const rise = (n: HTMLElement, delay: number, from = 'translateY(18px)', dur = 800) =>
+      anims.push(
+        n.animate([{ opacity: 0, transform: from }, { opacity: 1, transform: 'none' }], {
+          duration: dur,
+          delay: delay + boot,
+          easing: ease,
+          fill: 'backwards',
+        }),
+      )
+
+    q('.hl > span').forEach((n, i) =>
+      anims.push(
+        n.animate([{ transform: 'translateY(108%)' }, { transform: 'none' }], {
+          duration: 1050,
+          delay: boot + 320 + i * 120,
+          easing: ease,
+          fill: 'backwards',
+        }),
+      ),
+    )
+    q('.hero__sub').forEach((n) => rise(n, 760))
+    q('.hero__btns > *').forEach((n, i) =>
+      anims.push(
+        n.animate(
+          [
+            { opacity: 0, transform: `translateY(16px) scale(${i === 0 ? 1.015 : 1})` },
+            { opacity: 1, transform: 'none' },
+          ],
+          { duration: 800, delay: boot + 900 + i * 90, easing: ease, fill: 'backwards' },
+        ),
+      ),
+    )
+    q('.hero__stats > li').forEach((n, i) => rise(n, 1080 + i * 90, 'translateY(14px)'))
+    q('.hero__art').forEach((n) =>
+      anims.push(
+        n.animate([{ opacity: 0, transform: 'scale(.96)' }, { opacity: 1, transform: 'none' }], {
+          duration: 1600,
+          delay: boot + 200,
+          easing: ease,
+          fill: 'backwards',
+        }),
+      ),
+    )
+    q('.hcard').forEach((n, i) => rise(n, 1300 + i * 140, 'translateY(28px)', 900))
+    return () => anims.forEach((a) => a.cancel())
+  }, [])
 
   useEffect(() => {
-    if (paused) return
-    const t = window.setInterval(() => setI((n) => (n + 1) % total), 5000)
-    return () => window.clearInterval(t)
-  }, [paused, total])
-
-  const go = (n: number) => setI(((n % total) + total) % total)
-  const slide = HERO_SLIDES[i] || HERO_SLIDES[0]
-  if (!slide) return null
+    const v = video.current
+    if (!v) return
+    v.muted = true
+    v.play().catch(() => {})
+  }, [])
 
   return (
-    <section
-      ref={ref}
-      className="relative h-[64vh] min-h-[360px] max-h-[760px] overflow-hidden bg-brand-ink"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      {/* Background image (parallax + crossfade) */}
-      <AnimatePresence mode="popLayout">
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, scale: 1.08 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0"
-        >
-          <motion.img
-            src={slide.image}
-            alt=""
-            style={{ y: imgY }}
-            className="w-full h-[118%] object-cover object-center"
-          />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* subtle bottom scrim so the white dots/arrows stay visible on light banners */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/30 to-transparent" />
-
-      {/* arrows */}
-      <div className="absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-10">
-        <button
-          onClick={() => go(i - 1)}
-          aria-label="Previous"
-          className="liquid-glass w-11 h-11 rounded-full text-white hover:bg-white hover:text-brand-ink flex items-center justify-center transition-colors"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <button
-          onClick={() => go(i + 1)}
-          aria-label="Next"
-          className="liquid-glass w-11 h-11 rounded-full text-white hover:bg-white hover:text-brand-ink flex items-center justify-center transition-colors"
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
-
-      {/* progress dots */}
-      <div className="absolute bottom-10 left-0 right-0">
-        <div className="container-x flex items-center justify-between">
-          <div className="flex gap-2">
-            {HERO_SLIDES.map((_, n) => (
-              <button
-                key={n}
-                aria-label={`Slide ${n + 1}`}
-                onClick={() => go(n)}
-                className={`h-1 rounded-full transition-all ${
-                  n === i ? 'w-10 bg-white' : 'w-4 bg-white/40'
-                }`}
-              />
+    <section className="hero grid-bg" id="top" ref={root}>
+      <div className="hero__canvas">
+        <div className="hero__copy">
+          <h1 className="hero__h1">
+            {LINES.map((l) => (
+              <span className="hl" key={l}>
+                <span>{l}</span>
+              </span>
             ))}
+          </h1>
+          <p className="hero__sub">
+            Glixy racks dedicated servers, GPU pods and colocation slots for businesses and builders — live in
+            minutes, backed by engineers you can call.
+          </p>
+          <div className="hero__btns">
+            <Link className="hbtn hbtn--primary" to="/#racks">
+              Explore Racks
+            </Link>
+            <button className="hbtn hbtn--glass glass" onClick={() => talk()}>
+              Talk to Expert
+            </button>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-white/70 text-[11px] font-mono uppercase tracking-[0.25em] animate-float">
-            <ArrowDown size={14} /> Scroll
-          </div>
+          <ul className="hero__stats">
+            <li>
+              <b>6</b>
+              <span>regions</span>
+            </li>
+            <li>
+              <b>99.99%</b>
+              <span>uptime SLA</span>
+            </li>
+          </ul>
         </div>
+
+        <div className="hero__stage">
+          <div className="hero__art" aria-hidden="true">
+            {still ? (
+              <img src={ART_STILL} alt="" />
+            ) : (
+              <video ref={video} src={ART_VIDEO} poster={ART_STILL} autoPlay muted loop playsInline preload="auto" />
+            )}
+          </div>
+
+          <article className="hcard hcard--a gc gc--speed">
+            <span className="hcard__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32">
+                <rect x="6" y="5" width="20" height="6" rx="1.5" />
+                <rect x="6" y="13" width="20" height="6" rx="1.5" />
+                <rect x="6" y="21" width="20" height="6" rx="1.5" />
+                <circle cx="10" cy="8" r=".9" className="f" />
+                <circle cx="10" cy="16" r=".9" className="f" />
+                <circle cx="10" cy="24" r=".9" className="f" />
+                <path d="M15 8h7M15 16h7M15 24h7" />
+              </svg>
+            </span>
+            <div>
+              <p className="hcard__kicker">Bare Metal</p>
+              <h3 className="hcard__title">
+                GLX Titan: Dedicated,
+                <br />
+                Single-Tenant Compute.
+              </h3>
+            </div>
+            <Grain />
+          </article>
+
+          <article className="hcard hcard--b gc gc--connections">
+            <span className="hcard__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32">
+                <path d="M5 27V9l5-3v4l6-4 6 4V6l5 3v18Z" />
+                <path d="M12 27v-6a4 4 0 0 1 8 0v6" />
+                <rect x="13.5" y="13" width="5" height="4" rx=".8" />
+                <path d="M14.5 13v-1.4a1.5 1.5 0 0 1 3 0V13" />
+              </svg>
+            </span>
+            <div>
+              <p className="hcard__kicker">Colocation</p>
+              <h3 className="hcard__title">
+                VAULT: Secure Rack Slots
+                <br />
+                in Tier IV Data Halls.
+              </h3>
+            </div>
+            <Grain />
+          </article>
+        </div>
+
       </div>
     </section>
   )

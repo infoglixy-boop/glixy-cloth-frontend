@@ -1,0 +1,119 @@
+.glogo {
+  --logo-ink: #ff6b0d;
+  display: inline-block;
+  line-height: 0;
+}
+
+.glogo svg {
+  width: auto;
+  overflow: visible;
+  display: block;
+}
+
+.glogo--btn {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 6px;
+  margin: -6px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.glogo__ink {
+  fill: none;
+  stroke: var(--logo-ink);
+  stroke-width: 16;
+  stroke-linejoin: miter;
+  stroke-linecap: butt;
+}
+
+.glogo circle {
+  fill: var(--logo-ink);
+}
+
+.glogo__letter {
+  opacity: 0;
+  translate: var(--from) 0;
+  transition:
+    translate 0.62s cubic-bezier(0.2, 0.8, 0.2, 1) var(--close-delay),
+    opacity 0.28s ease var(--close-delay);
+}
+
+.is-open .glogo__letter {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: var(--open-delay), var(--open-delay);
+}
+
+/* Two wrappers give the dot a curved path: horizontal glide outside, vertical hop inside. */
+.glogo__dot-x {
+  translate: -126px 0;
+  transition: translate 0.62s cubic-bezier(0.3, 0.7, 0.25, 1);
+}
+
+.is-open .glogo__dot-x {
+  translate: 0 0;
+}
+
+.glogo__dot-y {
+  translate: 0 -2px;
+}
+
+.is-open .glogo__dot-y {
+  translate: 0 0;
+}
+
+.is-open .glogo__dot-y.played {
+  animation: glogo-hop-open 0.62s both;
+}
+
+.glogo__dot-y.played.closing {
+  animation: glogo-hop-close 0.62s both;
+}
+
+@keyframes glogo-hop-open {
+  0% {
+    translate: 0 -2px;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  45% {
+    translate: 0 -30px;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  80% {
+    translate: 0 0;
+    animation-timing-function: ease-out;
+  }
+  88% {
+    translate: 0 -3px;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes glogo-hop-close {
+  0% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  45% {
+    translate: 0 -30px;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  100% {
+    translate: 0 -2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glogo__letter,
+  .glogo__dot-x {
+    transition: none;
+  }
+  .glogo__dot-y.played {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,266 @@
+.expert {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(60, 30, 10, 0.32);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: expert-in 0.35s var(--ease) both;
+}
+
+.expert__panel {
+  position: relative;
+  width: min(620px, 100%);
+  max-height: calc(100svh - 40px);
+  overflow: auto;
+  padding: 36px 36px 32px;
+  border-radius: 22px;
+  background: rgba(255, 252, 248, 0.94);
+  animation: expert-rise 0.5s var(--ease) both;
+}
+
+.expert__panel h2 {
+  margin-top: 14px;
+  font-family: var(--display);
+  font-weight: 380;
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.expert__lead {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.5;
+  max-width: 46ch;
+}
+
+.expert__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  transition: background 0.2s;
+}
+
+.expert__close:hover {
+  background: rgba(28, 20, 13, 0.08);
+}
+
+.expert__close svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.expert__seg {
+  display: inline-flex;
+  margin-top: 22px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(28, 20, 13, 0.03);
+}
+
+.expert__seg button {
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--nav);
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease);
+}
+
+.expert__seg button.is-on {
+  background: var(--violet);
+  color: #fff;
+}
+
+.expert__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.expert__grid .span2 {
+  grid-column: 1 / -1;
+}
+
+.expert__grid label {
+  display: grid;
+  gap: 7px;
+}
+
+.expert__grid label span {
+  font-family: var(--tight);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.expert__grid input,
+.expert__grid select,
+.expert__grid textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--ink);
+  background: rgba(28, 20, 13, 0.04);
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  padding: 12px 14px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.expert__grid select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #b9b8bb 50%), linear-gradient(135deg, #b9b8bb 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.expert__grid select option {
+  background: #ffffff;
+}
+
+.expert__grid textarea {
+  resize: vertical;
+}
+
+.expert__grid input:focus,
+.expert__grid select:focus,
+.expert__grid textarea:focus {
+  border-color: rgba(234, 88, 12, 0.55);
+  background: rgba(28, 20, 13, 0.06);
+}
+
+.expert__note {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--kicker);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px dashed rgba(234, 88, 12, 0.3);
+}
+
+.expert__err {
+  margin-top: 14px;
+  color: #ffb4b4;
+  font-size: 13.5px;
+}
+
+.expert__submit {
+  margin-top: 22px;
+  width: 100%;
+}
+
+.expert__submit[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.expert__submit svg {
+  width: 20px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.expert__done {
+  text-align: center;
+  padding: 20px 0 6px;
+}
+
+.expert__done p {
+  margin: 10px auto 26px;
+  color: var(--muted);
+  max-width: 36ch;
+  line-height: 1.5;
+}
+
+.expert__tick {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--violet);
+  box-shadow: 0 10px 40px -8px rgba(247, 103, 7, 0.8);
+}
+
+.expert__tick svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes expert-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes expert-rise {
+  from {
+    transform: translateY(24px) scale(0.98);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .expert {
+    padding: 10px;
+    align-items: end;
+  }
+  .expert__panel {
+    padding: 28px 20px 22px;
+    border-radius: 20px;
+  }
+  .expert__grid {
+    grid-template-columns: 1fr;
+  }
+  .expert__panel h2 {
+    font-size: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expert,
+  .expert__panel {
+    animation: none;
+  }
+}
+
+.expert__logo {
+  margin-bottom: 18px;
+}

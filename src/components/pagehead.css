@@ -1,0 +1,233 @@
+.ph {
+  position: relative;
+  overflow: hidden;
+  padding: calc(var(--sh-h) + clamp(40px, 6vw, 84px)) clamp(16px, 5vw, 40px) clamp(48px, 6vw, 84px);
+  background-color: var(--bg);
+}
+
+.ph::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(110% 80% at 30% 40%, transparent 35%, var(--bg) 100%);
+}
+
+.ph__glow {
+  position: absolute;
+  right: -10%;
+  top: -30%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 138, 43, 0.28), rgba(255, 138, 43, 0) 70%);
+  animation: ph-glow 9s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes ph-glow {
+  to {
+    transform: translate(-6%, 8%) scale(1.08);
+  }
+}
+
+/* the logo's G, drawn stroke by stroke */
+.ph__mark {
+  position: absolute;
+  z-index: 1;
+  right: clamp(-80px, 4vw, 80px);
+  top: 50%;
+  width: clamp(200px, 24vw, 340px);
+  translate: 0 -46%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.ph__g {
+  fill: none;
+  stroke: #ff6b0d;
+  stroke-width: 11;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ph-draw 1.6s 0.2s cubic-bezier(0.65, 0, 0.25, 1) forwards;
+}
+
+.ph__ring {
+  fill: none;
+  stroke: rgba(234, 88, 12, 0.35);
+  stroke-width: 0.6;
+  stroke-dasharray: 0.006 0.012;
+  transform-origin: 54px 50px;
+  animation: ph-spin 40s linear infinite;
+}
+
+@keyframes ph-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ph-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.ph__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.ph__crumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--tight);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  animation: ph-rise 0.7s var(--ease) both;
+}
+
+.ph__crumbs a {
+  transition: color 0.2s;
+}
+
+.ph__crumbs a:hover {
+  color: var(--ink);
+}
+
+.ph__crumbs [aria-current] {
+  color: var(--kicker);
+}
+
+.ph__h1 {
+  margin-top: 22px;
+  max-width: 15em;
+  font-family: var(--display);
+  font-weight: 380;
+  font-size: clamp(42px, 6.4vw, 92px);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.ph__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.ph__line > span {
+  display: inline-block;
+  background: linear-gradient(90deg, #1c140d 0%, #2a1a0e 50%, #c2410c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ph-line 1s var(--ease) both;
+}
+
+@keyframes ph-line {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+.ph__lead {
+  margin-top: 24px;
+  max-width: 54ch;
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.55;
+  color: var(--muted);
+  animation: ph-rise 0.9s 0.4s var(--ease) both;
+}
+
+.ph__jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.ph__jumps li {
+  animation: ph-rise 0.7s var(--ease) both;
+}
+
+.ph__jumps a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--line-2);
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.ph__jumps a:hover {
+  color: #9a3412;
+  border-color: rgba(234, 88, 12, 0.35);
+  background: #fff;
+}
+
+.ph__jumps svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s var(--ease);
+}
+
+.ph__jumps a:hover svg {
+  transform: translateY(2px);
+}
+
+@keyframes ph-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (max-width: 760px) {
+  .ph {
+    padding-top: calc(var(--sh-h) + 36px);
+  }
+  .ph__mark {
+    right: -110px;
+    top: 120px;
+    translate: none;
+    width: 200px;
+    opacity: 0.22;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ph__glow,
+  .ph__ring,
+  .ph__crumbs,
+  .ph__line > span,
+  .ph__lead,
+  .ph__jumps li {
+    animation: none;
+  }
+  .ph__g {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

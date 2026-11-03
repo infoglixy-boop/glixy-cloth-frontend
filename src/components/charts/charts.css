@@ -1,0 +1,720 @@
+.ch-card {
+  margin: 0;
+  padding: 24px 24px 18px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid var(--line-2);
+  box-shadow: 0 18px 50px -30px rgba(150, 70, 20, 0.35);
+  min-width: 0;
+}
+
+.ch-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ch-head h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.ch-head p {
+  margin-top: 4px;
+  font-size: 13.5px;
+  color: var(--dim);
+  line-height: 1.45;
+}
+
+.ch-head__side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.ch-replay {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--dim);
+  border: 1px solid var(--line-2);
+  transition:
+    color 0.2s,
+    background 0.2s,
+    transform 0.5s var(--ease);
+}
+
+.ch-replay:hover {
+  color: var(--teal);
+  background: var(--orange-soft);
+  transform: rotate(-180deg);
+}
+
+.ch-replay svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ch-sample {
+  flex: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px dashed rgba(194, 65, 12, 0.5);
+  font-family: var(--tight);
+  font-weight: 600;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a3412;
+  background: #fff7ed;
+  white-space: nowrap;
+}
+
+.ch-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 14px 0 4px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.ch-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ch-key {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.ch-plot {
+  position: relative;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.ch-plot svg {
+  display: block;
+  overflow: visible;
+}
+
+.ch-grid {
+  stroke: #efe4da;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.ch-ref {
+  stroke: #b8a698;
+  stroke-width: 1;
+}
+
+.ch-cross {
+  stroke: #b8a698;
+  stroke-width: 1;
+}
+
+.ch-axis {
+  font-family: var(--sans);
+  font-size: 11px;
+  fill: #8a7565;
+}
+
+.ch-axis--title {
+  font-size: 11.5px;
+  fill: #6b5747;
+}
+
+.ch-cat {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.ch-val {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  fill: #6b5747;
+}
+
+.ch-val--em {
+  fill: var(--ink);
+  font-weight: 500;
+}
+
+.ch-endlabel {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  fill: var(--ink);
+}
+
+/* ---------- draw-in on first view ---------- */
+/* grid + axis labels arrive first, staggered */
+.ch-tick,
+.ch-xlab,
+.ch-cat,
+.ch-refg,
+.ch-reflabel {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+
+.is-seen .ch-tick,
+.is-seen .ch-xlab,
+.is-seen .ch-cat,
+.is-seen .ch-refg,
+.is-seen .ch-reflabel {
+  opacity: 1;
+}
+
+.ch-tick .ch-grid {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.9s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+
+.ch-tick line.ch-grid:not([pathLength]) {
+  stroke-dasharray: none;
+}
+
+.is-seen .ch-tick .ch-grid {
+  stroke-dashoffset: 0;
+}
+
+.ch-xlab.is-on {
+  fill: var(--ink);
+  font-weight: 600;
+}
+
+/* lines draw themselves */
+.ch-line {
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+.is-seen .ch-line {
+  stroke-dashoffset: 0;
+}
+
+/* area rises from the baseline */
+.ch-area {
+  opacity: 0;
+  transform: scaleY(0.2);
+  transform-box: fill-box;
+  transform-origin: bottom;
+  transition:
+    opacity 0.9s 0.7s var(--ease),
+    transform 1.1s 0.6s var(--ease);
+}
+
+.is-seen .ch-area {
+  opacity: 1;
+  transform: none;
+}
+
+/* end points pop in, labels count up (in JS) */
+.ch-end {
+  transform: scale(0);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.5s 1.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.is-seen .ch-end {
+  transform: none;
+}
+
+.ch-endlabel {
+  opacity: 0;
+  transition: opacity 0.5s 0.4s var(--ease);
+}
+
+.is-seen .ch-endlabel {
+  opacity: 1;
+}
+
+/* soft sonar ring on the leading series' latest value */
+.ch-pulse {
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ch-pulse 2.4s 1.8s ease-out infinite;
+  opacity: 0;
+}
+
+@keyframes ch-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ch-hoverdot {
+  animation: ch-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes ch-pop {
+  from {
+    transform: scale(0.3);
+  }
+}
+
+/* bars grow from the baseline, group by group */
+.ch-bar {
+  transform: scaleX(0);
+  transform-box: fill-box;
+  transform-origin: left center;
+  transition: transform 1.1s var(--ease);
+}
+
+.is-seen .ch-bar {
+  transform: scaleX(1);
+}
+
+.ch-bar-g {
+  transition: opacity 0.25s;
+}
+
+.ch-bar-g.is-dim {
+  opacity: 0.35;
+}
+
+.ch-val {
+  opacity: 0;
+  transition: opacity 0.4s 0.2s;
+}
+
+.is-seen .ch-val {
+  opacity: 1;
+}
+
+/* tooltip */
+.ch-tip {
+  position: absolute;
+  z-index: 5;
+  min-width: 210px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #1c140d;
+  color: #fff;
+  pointer-events: none;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+}
+
+.ch-tip__t {
+  font-family: var(--tight);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #d9c8ba;
+  margin-bottom: 6px;
+}
+
+.ch-tip__r {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.ch-tip__r b {
+  margin-left: auto;
+  padding-left: 12px;
+  font-family: var(--mono);
+  font-weight: 500;
+}
+
+/* table view */
+.ch-table {
+  margin-top: 12px;
+  border-top: 1px solid var(--line-2);
+  padding-top: 10px;
+}
+
+.ch-table summary {
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--teal);
+  font-weight: 500;
+  width: max-content;
+}
+
+.ch-table table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.ch-table th,
+.ch-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.ch-table th {
+  font-family: var(--tight);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.ch-table td {
+  font-family: var(--mono);
+  color: var(--muted);
+}
+
+/* stat tile */
+.ch-stat {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid var(--line-2);
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+
+.ch-stat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px -28px rgba(200, 80, 10, 0.55);
+}
+
+/* orange rule sweeps along the bottom as the number counts up */
+.ch-stat__bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #f04d0c, #ff8a2b);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s var(--ease);
+}
+
+.ch-stat.is-seen .ch-stat__bar {
+  transform: scaleX(1);
+}
+
+.ch-stat__label {
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.ch-stat__value {
+  font-variant-numeric: tabular-nums;
+  margin-top: 8px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 34px;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.ch-stat__note {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* uptime */
+.ch-uptime {
+  display: flex;
+  gap: 2px;
+  height: 40px;
+  position: relative;
+}
+
+.ch-uptime span {
+  flex: 1;
+  min-width: 0;
+  border-radius: 2px;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition:
+    transform 0.6s var(--ease) calc(var(--i) * 9ms),
+    scale 0.2s;
+}
+
+.ch-uptime.is-seen span {
+  transform: none;
+}
+
+.ch-uptime span:hover {
+  scale: 1 1.18;
+}
+
+.ch-uptime__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--dim);
+}
+
+.ch-uptime__axis b {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--mono);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.ch-legend--status {
+  margin-top: 12px;
+}
+
+.ch-ico {
+  display: inline-grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* segmented bar */
+.ch-seg {
+  display: flex;
+  gap: 2px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ch-seg span {
+  flex-basis: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition:
+    transform 0.9s var(--ease),
+    opacity 0.25s;
+}
+
+.ch-seg span.is-dim {
+  opacity: 0.35;
+}
+
+.ch-seg.is-seen span {
+  transform: none;
+}
+
+.ch-legend--seg li {
+  padding: 4px 6px;
+  margin: -4px -6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.ch-legend--seg li.is-hot {
+  background: var(--orange-soft);
+}
+
+.ch-legend--seg {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px 20px;
+  margin-top: 16px;
+}
+
+.ch-legend--seg b {
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  font-family: var(--mono);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.ch-spark {
+  width: 100%;
+}
+
+.ch-spark svg {
+  display: block;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-line,
+  .ch-bar,
+  .ch-seg span,
+  .ch-uptime span,
+  .ch-area,
+  .ch-end,
+  .ch-endlabel,
+  .ch-val,
+  .ch-tick,
+  .ch-tick .ch-grid,
+  .ch-xlab,
+  .ch-cat,
+  .ch-refg,
+  .ch-reflabel,
+  .ch-stat__bar {
+    transition: none;
+  }
+  .ch-pulse,
+  .ch-hoverdot {
+    animation: none;
+  }
+}
+
+/* ---------- stat tile in the glass-card skin ---------- */
+.ch-stat.gc {
+  min-height: 168px;
+  padding: 22px 22px 24px;
+  border-radius: 18px;
+}
+
+.ch-stat.gc .ch-stat__label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.ch-stat.gc .ch-stat__value {
+  margin-top: 14px;
+  color: #fff;
+  font-size: 40px;
+}
+
+.ch-stat__dots {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 1em;
+}
+
+.ch-stat__dots .dot-svg {
+  height: 0.92em;
+  width: auto;
+}
+
+.ch-stat__unit {
+  font-size: 0.72em;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.ch-stat.gc .ch-stat__note {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.ch-stat.gc .ch-stat__bar {
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.ch-stat.gc:hover {
+  box-shadow: 0 22px 44px -26px rgba(120, 30, 50, 0.7);
+}
+
+/* ---------- ApexCharts skin ---------- */
+.ch-apex {
+  margin-top: 6px;
+}
+
+.ch-skel {
+  border-radius: 12px;
+  background: linear-gradient(100deg, #fbf4ee 30%, #fff 50%, #fbf4ee 70%) 0 0 / 300% 100%;
+  animation: ch-skel 1.4s linear infinite;
+}
+
+@keyframes ch-skel {
+  to {
+    background-position: -150% 0;
+  }
+}
+
+.ch-apex .apexcharts-tooltip.apexcharts-theme-dark {
+  border: 0;
+  border-radius: 10px;
+  background: #1c140d;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45);
+}
+
+.ch-apex .apexcharts-tooltip-title {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  font-family: var(--tight) !important;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 10.5px !important;
+  color: #d9c8ba;
+}
+
+.ch-apex .apexcharts-tooltip-text-y-value {
+  font-family: var(--mono);
+}
+
+.ch-apex .apexcharts-legend-text {
+  font-family: var(--sans) !important;
+}
+
+/* sonar ring on the latest value of each line */
+.ch-apex .ch-apex-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ch-apex-pulse 2.4s 1.6s ease-out infinite;
+}
+
+@keyframes ch-apex-pulse {
+  0% {
+    stroke-width: 2;
+    stroke-opacity: 1;
+  }
+  100% {
+    stroke-width: 18;
+    stroke-opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-skel,
+  .ch-apex .ch-apex-pulse {
+    animation: none;
+  }
+}

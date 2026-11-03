@@ -1,0 +1,344 @@
+.seg {
+  position: relative;
+  padding: clamp(80px, 12vw, 160px) clamp(16px, 5vw, 40px);
+  background-color: var(--bg);
+  border-top: 1px solid var(--line-2);
+}
+
+.seg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(45% 50% at 80% 40%, rgba(247, 103, 7, 0.16), transparent 70%);
+}
+
+.seg__inner {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.seg__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.seg__toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(28, 20, 13, 0.02);
+}
+
+.seg__toggle button {
+  position: relative;
+  z-index: 1;
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--nav);
+  transition: color 0.4s var(--ease);
+  white-space: nowrap;
+}
+
+.seg__toggle button small {
+  margin-left: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  opacity: 0.7;
+}
+
+.seg__toggle button[aria-selected='true'] {
+  color: #fff;
+}
+
+.seg__pill {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc(50% - 5px);
+  border-radius: 999px;
+  background: var(--violet);
+  box-shadow: 0 8px 30px -8px rgba(247, 103, 7, 0.8);
+  transition: transform 0.55s var(--ease);
+}
+
+.seg__pill.is-r {
+  transform: translateX(100%);
+}
+
+.seg__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(40px, 6vw, 96px);
+  margin-top: clamp(40px, 6vw, 72px);
+  align-items: start;
+}
+
+.seg__copy h2 {
+  font-family: var(--display);
+  font-weight: 380;
+  font-size: clamp(38px, 4.6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.sl {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.sl > span {
+  display: block;
+  animation: sl-up 0.9s var(--ease) both;
+}
+
+.sl:nth-child(2) > span {
+  animation-delay: 0.1s;
+}
+
+.seg__lead {
+  margin-top: 22px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 44ch;
+  animation: fade-up 0.8s 0.2s var(--ease) both;
+}
+
+.seg__points {
+  display: grid;
+  gap: 18px;
+  margin: 32px 0 36px;
+}
+
+.seg__points li {
+  display: flex;
+  gap: 14px;
+  animation: fade-up 0.8s var(--ease) both;
+}
+
+.seg__points li:nth-child(1) {
+  animation-delay: 0.25s;
+}
+.seg__points li:nth-child(2) {
+  animation-delay: 0.32s;
+}
+.seg__points li:nth-child(3) {
+  animation-delay: 0.39s;
+}
+.seg__points li:nth-child(4) {
+  animation-delay: 0.46s;
+}
+
+.seg__points svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 50%;
+  background: rgba(234, 88, 12, 0.1);
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.seg__points b {
+  display: block;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.seg__points span {
+  display: block;
+  margin-top: 3px;
+  color: #9a99a0;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.seg__plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.plan {
+  --a: var(--teal);
+  position: relative;
+  padding: 24px;
+  border-radius: 20px;
+  overflow: hidden;
+  transition:
+    transform 0.4s var(--ease),
+    border-color 0.4s var(--ease);
+  animation: fade-up 0.8s calc(0.15s + var(--i) * 0.08s) var(--ease) both;
+}
+
+.plan::before {
+  content: '';
+  position: absolute;
+  inset: auto -30% -60% auto;
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--a) 28%, transparent), transparent);
+  pointer-events: none;
+  transition: transform 0.6s var(--ease);
+}
+
+.plan:hover {
+  transform: translateY(-4px);
+  border-color: rgba(28, 20, 13, 0.3);
+}
+
+.plan:hover::before {
+  transform: scale(1.3);
+}
+
+.plan__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plan__code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--a);
+  letter-spacing: 0.06em;
+}
+
+.plan__led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 3px rgba(61, 220, 151, 0.18);
+}
+
+.plan h3 {
+  margin-top: 22px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 25px;
+  letter-spacing: -0.025em;
+}
+
+.plan__tag {
+  margin-top: 6px;
+  color: #9a99a0;
+  font-size: 14px;
+}
+
+.plan dl {
+  margin: 20px 0 0;
+  display: grid;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-2);
+}
+
+.plan dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.plan dt {
+  font-family: var(--tight);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+}
+
+.plan dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  text-align: right;
+}
+
+.plan__foot {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 24px;
+}
+
+.plan__foot b {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.plan__foot p span {
+  margin-left: 3px;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.plan__foot button {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teal);
+}
+
+.plan__foot button:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@keyframes sl-up {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (max-width: 900px) {
+  .seg__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .seg__plans {
+    grid-template-columns: 1fr;
+  }
+  .seg__toggle button {
+    padding: 0 14px;
+    font-size: 13.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl > span,
+  .seg__lead,
+  .seg__points li,
+  .plan {
+    animation: none;
+  }
+}

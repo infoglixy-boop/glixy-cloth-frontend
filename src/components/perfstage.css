@@ -1,0 +1,844 @@
+/* "Built for Intelligent Performance" stage. Values follow the supplied spec; everything is scoped to .ps. */
+.ps {
+  --paper: #ececeb;
+  --ink: #222222;
+  --copy: #4a4a4a;
+  --card-ref-w: 429;
+  --card-ref-h: 554;
+  --card-count: 3;
+  --gap: clamp(8px, 1.5vw, 23px);
+  --gutter: clamp(14px, 3.6vw, 54px);
+  --content-max: calc(var(--card-count) * var(--card-ref-w) * 1px + (var(--card-count) - 1) * var(--gap));
+  --pad-top: clamp(20px, 9.6vh, 94px);
+  --pad-bottom: clamp(16px, 3vh, 52px);
+  --masthead-gap: clamp(16px, 3vw, 40px);
+  --cards-offset: clamp(14px, 9.4vh, 92px);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  padding: var(--pad-top) var(--gutter) var(--pad-bottom);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  /* same surface, type and colours as every other section */
+  border-top: 1px solid var(--line-2);
+  background:
+    radial-gradient(60% 40% at 85% 0%, rgba(255, 138, 43, 0.14), transparent 70%),
+    linear-gradient(var(--bg-2), var(--bg));
+}
+
+.ps__eyebrow {
+  grid-column: 1 / -1;
+}
+
+.ps .masthead > .headline {
+  grid-column: 1;
+}
+
+.ps .stage-motion {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.ps .stage-motion--narrow {
+  display: none;
+}
+
+.ps .masthead,
+.ps .cards {
+  width: min(100%, var(--content-max));
+  margin-inline: auto;
+}
+
+/* ---------- masthead ---------- */
+.ps .masthead {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, clamp(260px, 32vw, 483px));
+  gap: var(--masthead-gap);
+  align-items: start;
+}
+
+.ps .headline {
+  margin: 14px 0 0;
+  max-width: 100%;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(30px, min(4vw, 7vh), 58px);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.ps .headline__line {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.ps .dot-word {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 4.851em;
+  height: 0.766em;
+  margin-left: 0.319em;
+  color: #c2410c;
+  transform: translateY(0.06em);
+}
+
+.ps .dot-svg {
+  display: block;
+  overflow: visible;
+  color: inherit;
+  width: 100%;
+  height: auto;
+}
+
+.ps .intro {
+  container-type: inline-size;
+  width: 100%;
+  margin: 0;
+  align-self: end;
+  color: var(--muted);
+  font-size: clamp(15px, min(1.2vw, 2.2vh), 17px);
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.ps .desktop-break {
+  display: none;
+}
+
+@container (min-width: 26.5em) {
+  .ps .desktop-break {
+    display: inline;
+  }
+}
+
+/* ---------- cards row ---------- */
+.ps .cards {
+  flex: 1 1 auto;
+  container-type: size;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gap);
+  min-height: 0;
+  margin-top: var(--cards-offset);
+  --card-w: min(
+    (100cqw - (var(--card-count) - 1) * var(--gap)) / var(--card-count),
+    100cqh * var(--card-ref-w) / var(--card-ref-h),
+    var(--card-ref-w) * 1px
+  );
+}
+
+.ps .card {
+  container-type: inline-size;
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  width: var(--card-w);
+  aspect-ratio: 429 / 554;
+  border-radius: calc(var(--card-w) * 17 / 429);
+  color: #fff;
+  --u: calc(100cqw / 429);
+}
+
+.ps .card .gc__grain {
+  z-index: 2;
+}
+
+.ps .card__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.ps .card__title {
+  position: absolute;
+  z-index: 4;
+  top: 6.1%;
+  left: 5%;
+  width: 90%;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.96);
+  font-family: inherit;
+  font-size: calc(22.95 * var(--u));
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.48;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(72, 28, 48, 0.14);
+}
+
+.ps .metric {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.97);
+  filter: drop-shadow(0 1px 1px rgba(104, 27, 54, 0.08));
+}
+
+.ps .dot-number {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.ps .metric__unit {
+  margin-left: 1.3%;
+  font-size: calc(30.46 * var(--u));
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: calc(-0.8 * var(--u));
+}
+
+.ps .caption {
+  position: absolute;
+  z-index: 5;
+  top: 65.1%;
+  left: 10%;
+  width: 80%;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.87);
+  font-size: calc(19.95 * var(--u));
+  font-weight: 400;
+  letter-spacing: calc(-0.36 * var(--u));
+  line-height: 1.45;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(60, 21, 35, 0.16);
+}
+
+.ps .learn-more {
+  position: absolute;
+  z-index: 6;
+  top: 83.75%;
+  left: 50%;
+  width: calc(111 * var(--u));
+  height: calc(45 * var(--u));
+  transform: translateX(-50%);
+  border: 0;
+  border-radius: 999px;
+  color: #2d2d2d;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 1px 3px rgba(58, 25, 39, 0.08);
+  font-family: inherit;
+  font-size: calc(14 * var(--u));
+  font-weight: 400;
+  letter-spacing: calc(-0.25 * var(--u));
+  text-shadow: none;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.ps .learn-more:hover {
+  transform: translateX(-50%) translateY(calc(-2 * var(--u)));
+  box-shadow: 0 8px 20px rgba(58, 25, 39, 0.16);
+}
+
+.ps .learn-more:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.78);
+  outline-offset: 3px;
+}
+
+/* ---------- card 1: speed ---------- */
+.ps .card--speed .card__title {
+  top: 6.3%;
+  color: #fff;
+  font-size: calc(22.7 * var(--u));
+}
+
+.ps .gauge {
+  position: absolute;
+  z-index: 2;
+  top: 27.63%;
+  left: 10.5%;
+  width: 79%;
+  height: 59%;
+  overflow: visible;
+}
+
+.ps .tick {
+  stroke: rgba(255, 188, 210, 0.34);
+}
+
+.ps .metric--speed {
+  top: 48.6%;
+}
+
+.ps .metric--speed .dot-number {
+  width: 31.2%;
+}
+
+.ps .metric--speed .dot-svg {
+  transform: translate(calc(4 * var(--u)), calc(2 * var(--u))) scale(0.925, 1.018);
+  transform-origin: left top;
+}
+
+.ps .metric--speed .metric__unit {
+  margin-left: 1%;
+  font-size: calc(30.6 * var(--u));
+  transform: translateY(calc(5 * var(--u)));
+}
+
+.ps .card--speed .caption {
+  top: 64.75%;
+  font-size: calc(20.33 * var(--u));
+}
+
+.ps .card--speed .learn-more {
+  top: 83.9%;
+  height: calc(44 * var(--u));
+}
+
+/* ---------- card 2: context ---------- */
+.ps .card--context .card__title {
+  font-size: calc(23 * var(--u));
+  line-height: 1.48;
+}
+
+.ps .context-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ps .context-backdrop {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 54%, rgba(0, 0, 0, 0.72) 58%, rgba(0, 0, 0, 0.18) 62%, transparent 65%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 54%, rgba(0, 0, 0, 0.72) 58%, rgba(0, 0, 0, 0.18) 62%, transparent 65%);
+}
+
+.ps .context-window {
+  position: absolute;
+  z-index: 3;
+  top: 32.4%;
+  left: 20.4%;
+  width: 59%;
+  height: 30.1%;
+  overflow: hidden;
+  border: none;
+  border-radius: calc(10 * var(--u));
+  background:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 45%, rgba(255, 255, 255, 0) 80%),
+    linear-gradient(270deg, rgba(213, 62, 152, 0.62) 0px, rgba(213, 62, 152, 0) calc(5 * var(--u))),
+    radial-gradient(ellipse 118% 70% at 60% 8%, rgba(255, 203, 252, 0.34), transparent 74%),
+    linear-gradient(105deg, rgba(250, 232, 250, 0.72) 0%, rgba(238, 120, 214, 0.68) 51%, rgba(222, 86, 177, 0.82) 100%);
+  box-shadow:
+    0 calc(13 * var(--u)) calc(25 * var(--u)) rgba(70, 17, 69, 0.31),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(calc(9 * var(--u))) saturate(1.08);
+  backdrop-filter: blur(calc(9 * var(--u))) saturate(1.08);
+}
+
+.ps .window-lines {
+  position: absolute;
+  top: 9%;
+  left: 6.7%;
+  width: 87%;
+  height: 24%;
+}
+
+.ps .window-lines span {
+  display: block;
+}
+
+.ps .window-lines span:nth-child(1) {
+  width: 29%;
+  height: calc(6 * var(--u));
+  margin-bottom: calc(3 * var(--u));
+  border-radius: calc(2.5 * var(--u));
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.ps .window-lines span:nth-child(2),
+.ps .window-lines span:nth-child(3) {
+  height: calc(22 * var(--u));
+  border-radius: calc(6 * var(--u));
+  background: linear-gradient(90deg, rgba(255, 240, 253, 0.72), rgba(255, 170, 242, 0.75) 42%, rgba(255, 108, 235, 0.78));
+}
+
+.ps .window-lines span:nth-child(2) {
+  width: 100%;
+}
+
+.ps .window-lines span:nth-child(3) {
+  width: 86%;
+  margin-top: calc(3 * var(--u));
+  opacity: 0.64;
+}
+
+.ps .metric--context {
+  top: 48%;
+  transform: translateX(2.1cqw);
+}
+
+.ps .metric--context .dot-number {
+  width: 30.5%;
+}
+
+.ps .metric--context .dot-svg {
+  transform: translate(calc(-1 * var(--u)), calc(-0.5 * var(--u))) scale(0.96, 1.02);
+  transform-origin: center;
+}
+
+.ps .card--context .caption {
+  top: 65.72%;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: calc(19.1 * var(--u));
+  letter-spacing: calc(-0.28 * var(--u));
+  line-height: 1.38;
+}
+
+.ps .card--context .learn-more {
+  top: 83.9%;
+  height: calc(44 * var(--u));
+}
+
+/* ---------- card 3: connections ---------- */
+.ps .connections-map {
+  position: absolute;
+  z-index: 2;
+  top: 21.7%;
+  left: 0;
+  width: 100%;
+  height: 43%;
+  opacity: 0.78;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0, 0, 0, 0.46) 67%, rgba(0, 0, 0, 0.15) 83%, transparent 96%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0, 0, 0, 0.46) 67%, rgba(0, 0, 0, 0.15) 83%, transparent 96%);
+}
+
+.ps .metric--connections {
+  top: 48.5%;
+  transform: translateX(2.1cqw);
+}
+
+.ps .metric--connections .dot-number {
+  width: 23%;
+}
+
+/* ---------- portrait tablet ---------- */
+@media (min-width: 768px) and (max-width: 1180px) and (max-aspect-ratio: 6/7) {
+  .ps .cards {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: center;
+    align-content: center;
+    --card-w: min((100cqw - var(--gap)) / 2, (100cqh - var(--gap)) / 2 * 429 / 554, 429px);
+  }
+  .ps .card:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}
+
+/* ---------- mobile: stack and scroll ---------- */
+@media (max-width: 767px) {
+  .ps {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    padding-top: 56px;
+  }
+  .ps .stage-motion--wide {
+    display: none;
+  }
+  .ps .stage-motion--narrow {
+    display: block;
+  }
+  .ps .masthead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .ps .cards {
+    container-type: inline-size;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    --card-w: min(100cqw, 429px);
+  }
+}
+
+/* ---------- entrance (runs once when the stage scrolls into view) ---------- */
+.ps--wait :is(.headline__line, .intro, .card) {
+  opacity: 0;
+}
+
+.ps--play :is(.headline__line, .intro, .card, .card__title, .gauge, .context-window, .connections-map, .metric, .caption, .learn-more) {
+  will-change: opacity, translate, scale, clip-path, filter;
+}
+
+.ps--play .headline__line {
+  animation: ps-headline-reveal 0.84s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.ps--play .headline__line:nth-child(1) {
+  animation-delay: 0.08s;
+}
+
+.ps--play .headline__line:nth-child(2) {
+  animation-delay: 0.17s;
+}
+
+.ps--play .intro {
+  animation: ps-support-reveal 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+
+.ps .card {
+  --entrance-delay: 0.46s;
+}
+
+.ps .card:nth-child(2) {
+  --entrance-delay: 0.58s;
+}
+
+.ps .card:nth-child(3) {
+  --entrance-delay: 0.7s;
+}
+
+.ps--play .card {
+  animation: ps-card-establish 0.76s cubic-bezier(0.16, 1, 0.3, 1) var(--entrance-delay) both;
+}
+
+.ps--play .card__title {
+  animation: ps-card-title-reveal 0.62s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--entrance-delay) + 0.14s) both;
+}
+
+.ps--play .gauge {
+  animation: ps-gauge-resolve 0.82s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--entrance-delay) + 0.3s) both;
+}
+
+.ps--play .context-window {
+  animation: ps-panel-resolve 0.82s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--entrance-delay) + 0.3s) both;
+}
+
+.ps--play .connections-map {
+  animation: ps-network-resolve 0.82s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--entrance-delay) + 0.3s) both;
+}
+
+.ps--play .metric {
+  animation: ps-metric-resolve 0.66s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--entrance-delay) + 0.48s) both;
+}
+
+.ps--play .caption {
+  animation: ps-support-reveal 0.54s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--entrance-delay) + 0.64s) both;
+}
+
+.ps--play .learn-more {
+  animation: ps-control-settle 0.52s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--entrance-delay) + 0.8s) both;
+}
+
+@media (max-width: 767px) {
+  .ps .card,
+  .ps .card:nth-child(2),
+  .ps .card:nth-child(3) {
+    --entrance-delay: 0.4s;
+  }
+}
+
+@keyframes ps-headline-reveal {
+  from {
+    opacity: 0;
+    translate: 0 0.52em;
+    clip-path: inset(0 0 56% 0);
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    clip-path: inset(-8% -2% -8% -2%);
+  }
+}
+
+@keyframes ps-support-reveal {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+@keyframes ps-card-establish {
+  from {
+    opacity: 0.52;
+    translate: 0 10px;
+    scale: 0.985;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    scale: none;
+  }
+}
+
+@keyframes ps-card-title-reveal {
+  from {
+    opacity: 0;
+    translate: 0 calc(8 * var(--u));
+    clip-path: inset(0 0 48% 0);
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    clip-path: inset(-8% -2% -8% -2%);
+  }
+}
+
+@keyframes ps-gauge-resolve {
+  from {
+    opacity: 0;
+    translate: 0 calc(9 * var(--u));
+    scale: 0.972;
+    clip-path: inset(0 7% 18% 7%);
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    scale: none;
+    clip-path: inset(-3%);
+  }
+}
+
+@keyframes ps-panel-resolve {
+  from {
+    opacity: 0;
+    translate: 0 calc(10 * var(--u));
+    scale: 0.972;
+    clip-path: inset(8% 4% 8% 4%);
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    scale: none;
+    clip-path: inset(-3%);
+  }
+}
+
+@keyframes ps-network-resolve {
+  from {
+    opacity: 0;
+    translate: 0 calc(6 * var(--u));
+    clip-path: inset(45% 0 45% 0);
+  }
+  to {
+    opacity: 0.78;
+    translate: none;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes ps-metric-resolve {
+  from {
+    opacity: 0;
+    translate: 0 calc(7 * var(--u));
+    scale: 0.985;
+    filter: blur(2.5px);
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    scale: none;
+    filter: none;
+  }
+}
+
+@keyframes ps-control-settle {
+  from {
+    opacity: 0;
+    translate: 0 calc(6 * var(--u));
+    scale: 0.975;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    scale: none;
+  }
+}
+
+/* ---------- living details inside the cards ---------- */
+/* speed: radar beam sweeps back and forth across the dial */
+.ps .radar {
+  transform-box: view-box;
+  transform-origin: 163px 163px;
+  animation: ps-radar 4.8s ease-in-out infinite alternate;
+}
+
+@keyframes ps-radar {
+  from {
+    rotate: -78deg;
+  }
+  to {
+    rotate: 8deg;
+  }
+}
+
+/* context: the tile wall breathes, bars "type" in, tokens stream through */
+.ps .context-backdrop {
+  animation: ps-drift 9s ease-in-out infinite alternate;
+}
+
+@keyframes ps-drift {
+  from {
+    transform: translate(-1.5%, 0) scale(1.03);
+  }
+  to {
+    transform: translate(1.5%, -1.5%) scale(1.06);
+  }
+}
+
+.ps .window-lines span:nth-child(2),
+.ps .window-lines span:nth-child(3) {
+  position: relative;
+  overflow: hidden;
+  transform-origin: left;
+  animation: ps-type 3.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.ps .window-lines span:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.ps .window-lines span:nth-child(2)::after,
+.ps .window-lines span:nth-child(3)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.65) 50%, transparent 70%) -120% 0 / 50% 100% no-repeat;
+  animation: ps-shine 2.4s ease-in-out infinite;
+}
+
+@keyframes ps-type {
+  0% {
+    transform: scaleX(0.08);
+  }
+  45%,
+  85% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes ps-shine {
+  to {
+    background-position: 260% 0;
+  }
+}
+
+.ps .token-stream {
+  position: absolute;
+  left: 6.7%;
+  right: 6.7%;
+  top: 38%;
+  height: calc(6 * var(--u));
+  overflow: hidden;
+}
+
+.ps .token-stream i {
+  position: absolute;
+  top: 0;
+  left: -4%;
+  width: calc(6 * var(--u));
+  height: calc(6 * var(--u));
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 calc(6 * var(--u)) rgba(255, 255, 255, 0.8);
+  animation: ps-token 2.5s linear infinite;
+}
+
+@keyframes ps-token {
+  0% {
+    left: -4%;
+    opacity: 0;
+  }
+  15%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 102%;
+    opacity: 0;
+  }
+}
+
+/* connections: light travels along the warm routes, nodes ping */
+.ps .flow path {
+  stroke-dasharray: 8 92;
+  animation: ps-flow 3.2s linear infinite;
+  opacity: 0.9;
+}
+
+.ps .flow path:nth-child(2) {
+  animation-duration: 2.6s;
+  animation-delay: -1s;
+}
+
+@keyframes ps-flow {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ps .node-ping {
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ps-ping 2.25s ease-out infinite;
+}
+
+@keyframes ps-ping {
+  from {
+    scale: 1;
+    opacity: 0.9;
+  }
+  to {
+    scale: 3.2;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps .stage-motion,
+  .ps .card__media {
+    display: none !important;
+  }
+  .ps * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,440 @@
+/*
+ * Glass metric card skin — crimson "speed", lilac "context" and orange "connections".
+ * Layers: gradient stack → content → screen sheen (::before) → film grain.
+ * Used by the performance stage and by every feature card on the site.
+ */
+.filter-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.gc {
+  --glass-line: rgba(255, 255, 255, 0.36);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  border: 1px solid var(--glass-line);
+  background-origin: border-box;
+  box-shadow:
+    0 2px 4px rgba(50, 28, 39, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.gc::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(102deg, rgba(255, 255, 255, 0.1), transparent 28%, rgba(255, 255, 255, 0.08) 62%, transparent 88%),
+    radial-gradient(ellipse 85% 34% at 54% 7%, rgba(255, 255, 255, 0.24), transparent 72%);
+}
+
+.gc__grain {
+  position: absolute;
+  z-index: 2;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  opacity: 0.46;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* everything the card holds sits above the sheen and grain */
+.gc:not(.card) > :not(.gc__grain):not(.gc__media):not(.ch-stat__bar):not(.cta-band__arrow) {
+  position: relative;
+  z-index: 3;
+}
+
+/* site cards that already had their own ::before decoration */
+.plan.gc::before {
+  inset: 0;
+  width: auto;
+  aspect-ratio: auto;
+  border-radius: 0;
+  transform: none;
+}
+
+/* ---------- crimson ---------- */
+.gc.gc--speed {
+  background:
+    radial-gradient(ellipse 34% 24% at 50% 2%, rgba(255, 220, 211, 0.1) 0%, transparent 76%),
+    radial-gradient(ellipse 44% 34% at 106% 20%, rgba(255, 222, 211, 0.1) 0%, transparent 74%),
+    radial-gradient(ellipse 40% 27% at 50% 82%, rgba(255, 214, 208, 0.08) 0%, transparent 74%),
+    radial-gradient(ellipse 43% 31% at -7% 61%, rgba(127, 31, 53, 0.06) 0%, transparent 74%),
+    radial-gradient(ellipse 47% 34% at 107% 82%, rgba(119, 29, 49, 0.07) 0%, transparent 74%),
+    linear-gradient(180deg, rgba(255, 246, 241, 0.43) 0%, rgba(255, 237, 235, 0.19) 9%, transparent 22%),
+    radial-gradient(ellipse 44% 34% at 50% 111%, rgba(55, 0, 20, 0.16) 0%, transparent 74%),
+    radial-gradient(ellipse 105% 32% at 50% 80%, rgba(255, 218, 204, 0.2) 0%, rgba(255, 205, 196, 0.1) 48%, transparent 78%),
+    radial-gradient(ellipse 55% 22% at -5% 39%, rgba(240, 250, 200, 0.15) 0%, transparent 76%),
+    radial-gradient(ellipse 64% 49% at -8% 106%, rgba(255, 222, 199, 0.48) 0%, rgba(255, 204, 192, 0.25) 49%, transparent 78%),
+    radial-gradient(ellipse 64% 49% at 108% 106%, rgba(255, 222, 199, 0.43) 0%, rgba(255, 204, 192, 0.22) 49%, transparent 78%),
+    radial-gradient(ellipse 52% 54% at -8% 44%, rgba(255, 216, 207, 0.2) 0%, transparent 77%),
+    radial-gradient(ellipse 68% 45% at -4% -3%, rgba(255, 235, 232, 0.73) 0%, rgba(255, 226, 226, 0.41) 46%, transparent 77%),
+    radial-gradient(ellipse 70% 45% at 104% -4%, rgba(255, 238, 233, 0.78) 0%, rgba(255, 226, 226, 0.42) 48%, transparent 78%),
+    radial-gradient(ellipse 93% 47% at 106% 58%, rgba(245, 247, 241, 0.73) 0%, rgba(246, 231, 229, 0.42) 48%, transparent 76%),
+    radial-gradient(ellipse 74% 40% at -8% 73%, rgba(255, 210, 190, 0.48) 0%, rgba(255, 194, 181, 0.25) 48%, transparent 77%),
+    radial-gradient(ellipse 77% 36% at 57% 58%, rgba(255, 226, 218, 0.3) 0%, rgba(255, 206, 207, 0.15) 50%, transparent 78%),
+    radial-gradient(ellipse 54% 30% at 50% 17%, rgba(106, 8, 51, 0.22) 0%, transparent 78%),
+    linear-gradient(180deg, #bd4468 0%, #ad355b 38%, #a63b50 72%, #8c1320 100%);
+  background-origin: border-box;
+}
+
+.gc.gc--speed::before {
+  background:
+    linear-gradient(103deg, rgba(255, 255, 255, 0.08), transparent 31%, rgba(255, 255, 255, 0.055) 63%, transparent 88%),
+    radial-gradient(ellipse 92% 19% at 51% 0%, rgba(255, 255, 255, 0.08), transparent 78%);
+}
+
+.gc--speed .gc__grain {
+  opacity: 0.54;
+}
+
+/* ---------- lilac / plum ---------- */
+.gc.gc--context {
+  background:
+    radial-gradient(ellipse 118% 66% at 48% -8%, rgba(221, 232, 255, 0.065), transparent 74%),
+    radial-gradient(ellipse 106% 52% at 48% 112%, rgba(255, 155, 139, 0.075), transparent 73%),
+    radial-gradient(ellipse 82% 15% at 50% 29%, rgba(240, 204, 244, 0.24), transparent 81%),
+    radial-gradient(ellipse 64% 18% at 50% 61%, rgba(239, 177, 208, 0.17), transparent 81%),
+    radial-gradient(ellipse 43% 42% at -5% 30%, rgba(228, 220, 255, 0.53), transparent 78%),
+    radial-gradient(ellipse 43% 42% at 105% 30%, rgba(245, 200, 210, 0.54), transparent 78%),
+    radial-gradient(ellipse 70% 48% at 70% 110%, rgba(238, 204, 201, 0.62), transparent 77%),
+    radial-gradient(ellipse 70% 23% at 78% 1%, rgba(251, 208, 226, 0.56), transparent 78%),
+    radial-gradient(ellipse 78% 25% at 15% 8%, rgba(218, 211, 255, 0.54), transparent 79%),
+    radial-gradient(ellipse 38% 31% at 80% 90%, rgba(230, 190, 191, 0.38), transparent 74%),
+    radial-gradient(ellipse 45% 26% at 47% 78%, rgba(236, 184, 183, 0.45), transparent 73%),
+    linear-gradient(164deg, #c9b5e1 0%, #ad80ca 29%, #9d4f72 64%, #793246 100%);
+  background-origin: border-box;
+}
+
+.gc.gc--context::before {
+  mix-blend-mode: multiply;
+  opacity: 0.54;
+  background:
+    radial-gradient(ellipse 18% 23% at 20% 32%, rgba(103, 41, 148, 0.24), transparent 76%),
+    radial-gradient(ellipse 20% 24% at 81% 30%, rgba(121, 34, 113, 0.22), transparent 76%),
+    radial-gradient(ellipse 66% 9% at 50% 30%, rgba(103, 33, 125, 0.26), transparent 82%),
+    radial-gradient(ellipse 68% 8% at 50% 69%, rgba(86, 27, 64, 0.23), transparent 83%),
+    linear-gradient(103deg, rgba(255, 255, 255, 0.08), transparent 31%, rgba(255, 255, 255, 0.05) 63%, transparent 88%);
+}
+
+.gc--context .gc__grain {
+  opacity: 0.68;
+}
+
+/* ---------- orange / ember ---------- */
+.gc.gc--connections {
+  background:
+    radial-gradient(ellipse 54% 14% at 56% 0%, rgba(255, 206, 190, 0.16), transparent 76%),
+    radial-gradient(ellipse 38% 24% at 102% 8%, rgba(255, 190, 164, 0.24), transparent 75%),
+    radial-gradient(ellipse 28% 24% at -5% 66%, rgba(255, 192, 174, 0.3), transparent 74%),
+    radial-gradient(ellipse 46% 30% at 104% 32%, rgba(255, 146, 52, 0.42), transparent 74%),
+    radial-gradient(ellipse 80% 36% at 62% 57%, rgba(255, 141, 36, 0.62), transparent 72%),
+    radial-gradient(ellipse 58% 30% at 6% 103%, rgba(199, 49, 45, 0.38), transparent 76%),
+    radial-gradient(ellipse 60% 32% at 97% 101%, rgba(190, 40, 44, 0.42), transparent 76%),
+    linear-gradient(177deg, #d84736 0%, #dd523c 24%, #e8703d 52%, #de5641 78%, #d34239 100%);
+  background-origin: border-box;
+}
+
+.gc.gc--connections::before {
+  background:
+    linear-gradient(102deg, rgba(255, 255, 255, 0.07), transparent 30%, rgba(255, 255, 255, 0.05) 62%, transparent 88%),
+    radial-gradient(ellipse 84% 26% at 54% 4%, rgba(255, 255, 255, 0.11), transparent 74%);
+}
+
+.gc--connections .gc__grain {
+  opacity: 0.58;
+}
+
+/* Text-heavy cards: a soft plum scrim keeps small white copy readable on the light areas. */
+.gc--dense::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(60, 14, 34, 0.16), rgba(60, 14, 34, 0.3));
+}
+
+.gc--dense.gc--connections::after {
+  background: linear-gradient(180deg, rgba(90, 20, 10, 0.12), rgba(90, 20, 10, 0.26));
+}
+
+.gc,
+.gc * {
+  text-shadow: 0 1px 2px rgba(60, 21, 35, 0.18);
+}
+
+/* shared pieces inside skinned cards */
+.gc .dot-svg {
+  display: block;
+  overflow: visible;
+  height: 1em;
+  width: auto;
+}
+
+.gc-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  height: 40px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  color: #2d2d2d;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 1px 3px rgba(58, 25, 39, 0.08);
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  text-shadow: none;
+  white-space: nowrap;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.gc-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(58, 25, 39, 0.16);
+}
+
+.gc-pill:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.78);
+  outline-offset: 3px;
+}
+
+.gc-pill--ghost {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+.gc-pill--ghost:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+/* ---------- site cards wearing the glass skin ---------- */
+.gc .eyebrow {
+  color: #ffe3d6;
+}
+
+/* explore teasers */
+.xp__card.gc .xp__k {
+  color: #fff;
+}
+.xp__card.gc .xp__note {
+  color: rgba(255, 255, 255, 0.88);
+}
+.xp__card.gc .xp__g path {
+  stroke: #fff;
+}
+.xp__card.gc:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 30px 60px -30px rgba(120, 30, 50, 0.65);
+}
+
+/* who runs on glixy */
+.who__card.gc .who__ico {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+.who__card.gc .who__ico svg {
+  stroke: #fff;
+}
+.who__card.gc .who__pain {
+  color: rgba(255, 255, 255, 0.85);
+}
+.who__card.gc ul li {
+  color: rgba(255, 255, 255, 0.95);
+}
+.who__card.gc ul li::before {
+  background: #fff;
+}
+.who__card.gc .gc-pill {
+  align-self: flex-start;
+  height: 36px;
+  padding: 0 16px;
+  font-size: 13px;
+  color: #2d2d2d;
+  text-decoration: none;
+}
+.who__card.gc:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 24px 50px -28px rgba(120, 30, 50, 0.7);
+}
+
+/* GPU line-up */
+.gpu__card.gc .gpu__code {
+  color: #ffe3d6;
+}
+.gpu__card.gc .gpu__tag,
+.gpu__card.gc .gpu__foot {
+  color: rgba(255, 255, 255, 0.85);
+}
+.gpu__card.gc dl div {
+  border-top-color: rgba(255, 255, 255, 0.22);
+}
+.gpu__card.gc dt {
+  color: rgba(255, 255, 255, 0.72);
+}
+.gpu__card.gc .gpu__foot b {
+  color: #fff;
+}
+
+/* B2B / B2C plan cards */
+.plan.gc .plan__code {
+  color: #ffe3d6;
+}
+.plan.gc .plan__tag,
+.plan.gc .plan__foot p span {
+  color: rgba(255, 255, 255, 0.82);
+}
+.plan.gc dl {
+  border-top-color: rgba(255, 255, 255, 0.24);
+}
+.plan.gc dt {
+  color: rgba(255, 255, 255, 0.72);
+}
+.plan.gc .plan__foot .gc-pill {
+  height: 34px;
+  padding: 0 14px;
+  font-size: 12.5px;
+  color: #2d2d2d;
+}
+.plan.gc:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* hero floating cards */
+.hcard.gc .hcard__kicker {
+  color: #ffe3d6;
+}
+.hcard.gc .hcard__title {
+  color: #fff;
+}
+.hcard.gc .hcard__icon {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.hcard.gc .hcard__icon svg {
+  stroke: #fff;
+}
+.hcard.gc .hcard__icon svg .f {
+  fill: #fff;
+}
+
+/* "next page" card */
+.cta-band__next.gc .cta-band__k {
+  color: #ffe3d6;
+}
+.cta-band__next.gc b {
+  color: #fff;
+}
+.cta-band__next.gc .cta-band__blurb {
+  color: rgba(255, 255, 255, 0.86);
+}
+.cta-band__next.gc .cta-band__arrow {
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+.cta-band__next.gc:hover .cta-band__arrow {
+  background: #fff;
+  color: #9a3412;
+}
+.cta-band__next.gc:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* lenders */
+.trust__card--accent.gc h3 {
+  color: #fff;
+}
+.trust__card--accent.gc p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.gc .gc-pill,
+.gc .gc-pill:hover {
+  text-decoration: none;
+}
+
+/* ---------- living cards: drifting gradient, light sweep, pointer tilt ---------- */
+.gc--live.gc--live {
+  background-size: 160% 160% !important;
+  animation: gc-drift 14s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i, 0) * -2.6s);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.45s var(--ease),
+    border-color 0.45s;
+}
+
+.gc--live.gc--live:hover {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px);
+}
+
+@keyframes gc-drift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 40%;
+  }
+  100% {
+    background-position: 30% 100%;
+  }
+}
+
+/* diagonal light sweep, staggered per card */
+.gc--live::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.28) 50%, transparent 62%) -160% 0 / 70% 100% no-repeat;
+  animation: gc-sweep 6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.7s);
+}
+
+@keyframes gc-sweep {
+  0%,
+  55% {
+    background-position: -160% 0;
+  }
+  100% {
+    background-position: 260% 0;
+  }
+}
+
+/* soft spotlight that follows the pointer */
+.gc--live.gc--live:hover::before {
+  mix-blend-mode: screen;
+  opacity: 1;
+  background-image:
+    radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.28), transparent 45%),
+    linear-gradient(102deg, rgba(255, 255, 255, 0.1), transparent 28%, rgba(255, 255, 255, 0.08) 62%, transparent 88%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc--live,
+  .gc--live::after {
+    animation: none;
+  }
+  .gc--live.gc--live,
+  .gc--live.gc--live:hover {
+    transform: none;
+  }
+}

@@ -1,98 +1,119 @@
-import { useEffect } from 'react'
-import { StoreProvider } from './context/StoreContext'
-import { ContentProvider, useContent } from './context/ContentContext'
-import ScrollProgress from './components/ScrollProgress'
-import Announce from './components/Announce'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import Marquee from './components/Marquee'
-import Categories from './components/Categories'
-import Usp from './components/Usp'
-import ProductSection from './components/ProductSection'
-import Lookbook from './components/Lookbook'
-import Newsletter from './components/Newsletter'
+import { useEffect, useLayoutEffect, type ComponentType } from 'react'
+import { ExpertProvider } from './components/Expert'
+import SiteHeader from './components/SiteHeader'
+import { GlassDefs } from './components/glass/Grain'
 import Footer from './components/Footer'
-import CartDrawer from './components/CartDrawer'
-import WishlistDrawer from './components/WishlistDrawer'
-import LoginModal from './components/LoginModal'
-import Chatbot from './components/Chatbot'
-import InfoModal from './components/InfoModal'
-import Toast from './components/Toast'
+import FloatingCta from './components/FloatingCta'
+import Home from './pages/Home'
+import ServersPage from './pages/ServersPage'
+import BenchmarksPage from './pages/BenchmarksPage'
+import AiPage from './pages/AiPage'
+import CustomersPage from './pages/CustomersPage'
+import TrustPage from './pages/TrustPage'
+import MissionPage from './pages/MissionPage'
+import ContactPage from './pages/ContactPage'
+import PoliciesPage from './pages/PoliciesPage'
+import NotFound from './pages/NotFound'
+import { scrollToHash, useLocation } from './router'
 
-function HeadSync() {
-  const { settings } = useContent()
+const ROUTES: Record<string, { page: ComponentType; title: string }> = {
+  '/': { page: Home, title: 'Glixy — Dedicated Servers, GPU Racks & Colocation' },
+  '/servers': { page: ServersPage, title: 'Servers & rack slots — Glixy' },
+  '/benchmarks': { page: BenchmarksPage, title: 'Benchmarks — Glixy' },
+  '/ai': { page: AiPage, title: 'AI & model training — Glixy' },
+  '/customers': { page: CustomersPage, title: 'Customers — Glixy' },
+  '/trust': { page: TrustPage, title: 'Trust & compliance — Glixy' },
+  '/mission': { page: MissionPage, title: 'Mission & vision — Glixy' },
+  '/contact': { page: ContactPage, title: 'Contact — Glixy' },
+  '/policies': { page: PoliciesPage, title: 'Policies — Glixy' },
+}
+
+// Blocks that fade up as they scroll into view, on every page.
+const REVEAL = [
+  '.sec__head',
+  '.sec__stats > *',
+  '.sec__grid > *',
+  '.sec__wide',
+  '.who > li',
+  '.comp > li',
+  '.pipe > li',
+  '.benefits > li',
+  '.sec-ops > li',
+  '.trust__cols > *',
+  '.trust__title',
+  '.xp > li',
+  '.gpu > li',
+  '.faq > details',
+  '.cta-band__inner > *',
+  '.pol__item',
+  '.contact > *',
+  '.cat__bar',
+].join(',')
+
+function useReveal(path: string) {
   useEffect(() => {
-    document.title = `${settings.storeName} — ${settings.storeTagline}`
-    if (settings.favicon) {
-      let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement | null
-      if (!link) {
-        link = document.createElement('link')
-        link.rel = 'icon'
-        document.head.appendChild(link)
-      }
-      link.href = settings.favicon
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const els = Array.from(document.querySelectorAll<HTMLElement>(`main ${REVEAL.split(',').join(', main ')}`))
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          e.target.classList.add('is-in')
+          io.unobserve(e.target)
+        })
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    )
+    els.forEach((el) => {
+      if (el.classList.contains('is-in')) return
+      const i = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0
+      el.style.setProperty('--rv-d', `${Math.min(i, 7) * 70}ms`)
+      el.classList.add('rv')
+      io.observe(el)
+    })
+    return () => io.disconnect()
+  }, [path])
+}
+
+if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+
+export default function App() {
+  const { path, hash } = useLocation()
+  const route = ROUTES[path]
+  const Page = route?.page ?? NotFound
+
+  useEffect(() => {
+    document.title = route?.title ?? 'Page not found — Glixy'
+  }, [route])
+
+  // new page: start at the top, or at the #anchor once the layout has settled
+  useLayoutEffect(() => {
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      return
     }
-  }, [settings.storeName, settings.storeTagline, settings.favicon])
-  return null
-}
+    window.scrollTo({ top: 0, behavior: 'instant' })
+    const t1 = window.setTimeout(() => scrollToHash(hash, false), 60)
+    const t2 = window.setTimeout(() => scrollToHash(hash, true), 450)
+    return () => {
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+    }
+    // only on page change — same-page hash jumps are handled by navigate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path])
 
-function Sections() {
-  const { products } = useContent()
+  useReveal(path)
+
   return (
-    <>
-      <ProductSection
-        id="new"
-        index="( 03 )"
-        subtitle="Fresh on the rack"
-        title="New Arrivals"
-        products={products.new}
-      />
-      <Lookbook />
-      <ProductSection
-        id="best"
-        index="( 04 )"
-        subtitle="Loved by the gang"
-        title="Bestsellers"
-        products={products.best}
-      />
-      <Usp />
-      <ProductSection
-        id="sale"
-        index="( 05 )"
-        subtitle="Up to 65% off"
-        title="End of Season Sale"
-        products={products.sale}
-      />
-    </>
+    <ExpertProvider>
+      <GlassDefs />
+      <SiteHeader />
+      <main key={path} className="page">
+        <Page />
+      </main>
+      <Footer />
+      <FloatingCta />
+    </ExpertProvider>
   )
 }
-
-function App() {
-  return (
-    <ContentProvider>
-      <StoreProvider>
-        <HeadSync />
-        <ScrollProgress />
-        <Announce />
-        <Header />
-        <main>
-          <Hero />
-          <Marquee />
-          <Categories />
-          <Sections />
-          <Newsletter />
-        </main>
-        <Footer />
-
-        <CartDrawer />
-        <WishlistDrawer />
-        <LoginModal />
-        <InfoModal />
-        <Chatbot />
-        <Toast />
-      </StoreProvider>
-    </ContentProvider>
-  )
-}
-
-export default App
