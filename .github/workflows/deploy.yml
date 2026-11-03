@@ -38,3 +38,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
+
+      # Root-path build for glixy.in on Hostinger. hPanel → Advanced → Git pulls this branch into public_html.
+      - name: Build for glixy.in (served from the domain root)
+        run: npx vite build --base=/ --outDir dist-root
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist-root
+          publish_branch: hostinger
+          force_orphan: true
